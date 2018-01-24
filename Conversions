@@ -1,0 +1,43 @@
+hello
+This is Ryan
+The robot will go right in front of the thing it is placing
+Red= our color
+Switch:
+Middle:
+Red right: 
+4.2672, 1.8288, -45
+0,0,-45
+place
+(if want to get another cube)
+0,0,45
+0,0,45
+-1.1684, -1.8288,0
+Pick up 
+1.1684, 1.8288,-45
+0,0,-45
+place
+Red Left: 
+-4.2672, -1.8288, 45
+0,0,45
+place
+(if want to get another cube)
+0,0,-45
+1.1684, 1.8288,-45
+Pick up 
+-1.1684, -1.8288,45
+0,0,45
+place
+Scale our side robo on Right: 
+8.5255,???, -45
+0,0,-45
+Scale opposite side robo on Right:
+5.08,0,-45
+0, -6.7056,45
+3.4455,0,45
+Scale our side robo on Left: 
+8.5255,???, 45
+0,0,45
+Scale opposite side robo on Right:
+5.08,0,45
+0, 6.7056,-45
+3.4455,0,-45
