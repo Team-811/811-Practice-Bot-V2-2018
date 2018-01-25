@@ -2,6 +2,9 @@ package org.usfirst.frc.team811.robot;
 
 import com.kauailabs.navx.frc.AHRS;
 
+
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
@@ -20,12 +23,8 @@ public class RobotMap implements Config
 	public static Joystick joystick1;
 	public static Joystick joystick2;
 	
-    public static SpeedController drivefrontleft;
-    public static SpeedController drivebackleft;
-    public static SpeedControllerGroup driveLeft;
-	public static SpeedController drivefrontright;
-    public static SpeedController drivebackright;
-    public static SpeedControllerGroup driveRight;
+    public static WPI_TalonSRX driveLeft;
+	public static WPI_TalonSRX driveRight;
     public static Encoder driveEncoderLeft;
     public static Encoder driveEncoderRight;
     public static DifferentialDrive driveTrain;
@@ -47,12 +46,8 @@ public class RobotMap implements Config
         ultra.setOversampleBits(4);
         ultra.setAverageBits(2);
             	
-        drivefrontleft = new Talon(FRONT_LEFT_PORT);
-        drivebackleft = new Talon(BACK_LEFT_PORT);
-        driveLeft = new SpeedControllerGroup(drivefrontleft, drivebackleft);
-        drivefrontright = new Talon(FRONT_RIGHT_PORT);
-        drivebackright = new Talon(BACK_RIGHT_PORT);
-        driveRight = new SpeedControllerGroup(drivefrontright, drivebackright);
+        driveLeft = new WPI_TalonSRX(FRONT_LEFT_PORT);
+        driveRight = new WPI_TalonSRX(FRONT_RIGHT_PORT);
         driveTrain = new DifferentialDrive(driveLeft, driveRight);
         
         driveEncoderLeft = new Encoder(DRIVE_ENCODER_PORT_LEFT_1, DRIVE_ENCODER_PORT_LEFT_2);

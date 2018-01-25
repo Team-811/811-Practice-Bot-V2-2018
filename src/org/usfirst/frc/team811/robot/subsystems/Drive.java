@@ -7,6 +7,7 @@ import org.usfirst.frc.team811.robot.RobotMap;
 import org.usfirst.frc.team811.robot.commands.drive_w_joysticks;
 import org.usfirst.frc.team811.robot.Config;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
@@ -34,12 +35,8 @@ import jaci.pathfinder.modifiers.TankModifier;
 public class Drive extends Subsystem implements Config {
 	
     Joystick joy1 = RobotMap.joystick1;
-    SpeedController frontleft = RobotMap.drivefrontleft;
-    SpeedController backleft = RobotMap.drivebackleft;
-    SpeedControllerGroup left = RobotMap.driveLeft;
-    SpeedController frontright = RobotMap.drivefrontright;
-    SpeedController backright = RobotMap.drivebackright;
-    SpeedControllerGroup right = RobotMap.driveRight;
+    WPI_TalonSRX frontleft = RobotMap.driveLeft;
+    WPI_TalonSRX frontright = RobotMap.driveRight;
     DifferentialDrive driveTrain = RobotMap.driveTrain;
     Encoder driveEncoderLeft = RobotMap.driveEncoderLeft;
     Encoder driveEncoderRight = RobotMap.driveEncoderRight;
