@@ -1,8 +1,7 @@
 package org.usfirst.frc.team811.robot;
 
 import com.kauailabs.navx.frc.AHRS;
-
-
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
@@ -42,20 +41,21 @@ public class RobotMap implements Config
     	joystick1 = new Joystick(1);
         joystick2 = new Joystick(2);
 
-        ultra = new AnalogInput(ULTRA_PORT);
-        ultra.setOversampleBits(4);
-        ultra.setAverageBits(2);
             	
-        driveLeft = new WPI_TalonSRX(FRONT_LEFT_PORT);
-        driveRight = new WPI_TalonSRX(FRONT_RIGHT_PORT);
-        driveTrain = new DifferentialDrive(driveLeft, driveRight);
+        driveLeft = new WPI_TalonSRX(DRIVE_LEFT_PORT); 
+        driveLeft.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, 10);
+        driveLeft.setSensorPhase(true); /* keep sensor and motor in phase */
+        driveLeft.configNeutralDeadband(0.01, 0);
         
-        driveEncoderLeft = new Encoder(DRIVE_ENCODER_PORT_LEFT_1, DRIVE_ENCODER_PORT_LEFT_2);
-        driveEncoderLeft.setReverseDirection(true);
-        driveEncoderLeft.setDistancePerPulse(1/1513.0);
-
-        driveEncoderRight = new Encoder(DRIVE_ENCODER_PORT_RIGHT_1, DRIVE_ENCODER_PORT_RIGHT_2);
-        driveEncoderRight.setReverseDirection(false);
+        
+        driveRight = new WPI_TalonSRX(DRIVE_RIGHT_PORT);    
+        driveRight.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+        driveRight.setSensorPhase(true); /* keep sensor and motor in phase */
+        driveRight.configNeutralDeadband(0.01, 0);
+        
+        
+        driveTrain = new DifferentialDrive(driveLeft, driveRight);
+ 
         
         ahrs = new AHRS(SPI.Port.kMXP);
         

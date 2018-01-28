@@ -7,16 +7,9 @@ public interface Config {
 	
 	//ports
 	
-	int FRONT_RIGHT_PORT = 3;	
-	int FRONT_LEFT_PORT = 1;	
-	int BACK_RIGHT_PORT = 4;	
-	int BACK_LEFT_PORT = 2;		
+	int DRIVE_RIGHT_PORT = 3;	
+	int DRIVE_LEFT_PORT = 1;	
 	
-	int DRIVE_ENCODER_PORT_LEFT_1 = 3;
-	int DRIVE_ENCODER_PORT_LEFT_2 = 4;
-	
-	int DRIVE_ENCODER_PORT_RIGHT_1 = 8;
-	int DRIVE_ENCODER_PORT_RIGHT_2 = 9;
 	
 	int ULTRA_PORT = 0; //TODO
 	
