@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Gripper extends Subsystem {
 
-	private static final int COMPRESSOR_PORT = 0;
+	private static final int COMPRESSOR_PORT = 0; 
 	private static final int OPEN_PORT = 0;
 	private static final int CLOSE_PORT = 1;
 	
