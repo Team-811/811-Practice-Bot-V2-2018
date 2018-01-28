@@ -4,27 +4,27 @@ The robot will go right in front of the thing it is placing
 Red= our color
 Switch:
 Middle:
-Red right: 
+Red Left: 
 4.2672, 1.8288, -45
 0,0,-45
 place
 (if want to get another cube)
 0,0,45
 0,0,45
--1.1684, -1.8288,0
+-1.1684,0,0
 Pick up 
 1.1684, 1.8288,-45
 0,0,-45
 place
-Red Left: 
--4.2672, -1.8288, 45
+Red Right: 
+4.2672, -1.8288, 45
 0,0,45
 place
 (if want to get another cube)
 0,0,-45
-1.1684, 1.8288,-45
+-1.1684, 1.8288,-45
 Pick up 
--1.1684, -1.8288,45
+1.1684, -1.8288,45
 0,0,45
 place
 Scale our side robo on Right: 

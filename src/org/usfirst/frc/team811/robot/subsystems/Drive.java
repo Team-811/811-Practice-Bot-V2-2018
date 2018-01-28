@@ -120,9 +120,9 @@ public class Drive extends Subsystem implements Config {
 		Waypoint[] points = new Waypoint[] {
 				new Waypoint(0, 0, 0), 
 																						
-				new Waypoint(3, -1, Pathfinder.d2r(-45)), // Waypoint @ x=-2, y=-2, exit angle=0 radians
-				//new Waypoint(6, 0, 0),
-				//new Waypoint(2,-2,Pathfinder.d2r(-90))
+				new Waypoint(4.2672, 1.8288,Pathfinder.d2r(-90)), // Waypoint @ x=-2, y=-2, exit angle=0 radians
+				new Waypoint(3.0988,0,0),
+				new Waypoint(4.2672, 1.8288,Pathfinder.d2r(-90))
 		};
 
 		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05, max_velocity, max_acceleration, max_jerk);
