@@ -13,23 +13,25 @@ import edu.wpi.first.wpilibj.SensorBase;
 public class Lidar extends Subsystem{
 
 	private I2C i2c;
-	private java.util.Timer updater;
+	private java.util.Timer updateTimer;
 	private LIDARUpdater task;
 	private final int LIDAR_ADDR = 0x62;	
 	private final int LIDAR_CONFIG_REGISTER = 0x00;
 	private final int LIDAR_DISTANCE_REGISTER = 0x8f;
 	private final int LIDAR_STATUS_REGISTER = 0x01;
+	
+	private int distance = 0;  // in cm?
 		
-	public Lidar(Port port) {
-	i2c = new I2C(Port.kMXP, LIDAR_ADDR);
+	public Lidar() {
+		i2c = new I2C(Port.kOnboard, LIDAR_ADDR);
 	 
-	task = new LIDARUpdater();
-	updater = new java.util.Timer();
+		task = new LIDARUpdater();
+		updater = new java.util.Timer();
 	}
 		
 		// Distance in cm
-	public static int getDistance() {
-		return (int)Integer.toUnsignedLong(distance[0] << 8) + Byte.toUnsignedInt(distance[1]);
+	public int getDistance() {
+		return distance;
 	}
  
 	public double pidGet() {
@@ -38,22 +40,22 @@ public class Lidar extends Subsystem{
 		
 		// Start 10Hz polling
 	public void start() {
-		updater.scheduleAtFixedRate(task, 0, 20);
+		updateTimer.scheduleAtFixedRate(task, 0, 20);
 	}
 		
 		// Start polling for period in milliseconds
 	public void start(int period) {
-		updater.scheduleAtFixedRate(task, 0, period);
+		updateTimer.scheduleAtFixedRate(task, 0, period);
 	}
 		
 	public void stop() {
-		updater.cancel();
+		updateTimer.cancel();
 	}
 		
 	// Update distance variable
 	public void update() {
 		
-		byte[] distance = new byte[2];
+		byte[] distanceBuffer = new byte[2];
 		i2c.write(LIDAR_CONFIG_REGISTER, 0x04);
 		int i = 0;
 		byte[] status = new byte[1];
@@ -64,40 +66,15 @@ public class Lidar extends Subsystem{
 			i2c.read(LIDAR_STATUS_REGISTER, 1, status);
 		}
 		
-		i2c.read(LIDAR_DISTANCE_REGISTER, 1, distance); 
+		i2c.read(LIDAR_DISTANCE_REGISTER, 2, distanceBuffer); 
 		
-		//i2c.read(LIDAR_DISTANCE_REGISTER, 2, distance); // Read in measurement
-		//i2c.write(LIDAR_CONFIG_REGISTER, 0x04);// Initiate measurement
-		//Timer.delay(0.04); // Delay for measurement to be taken
-		//Timer.delay(0.01); // Delay to prevent over polling
-		
+		distance = (int)Integer.toUnsignedLong(distanceBuffer[0] << 8) + Byte.toUnsignedInt(distanceBuffer[1]);
 	}
 		
 		// Timer task to keep distance updated
 	private class LIDARUpdater extends TimerTask {
 		public void run() {
-			while(true) {
-				update(); 
-//					if(getDistance() < 90 && getDistance() > 84){
-//						SmartDashboard.putBoolean("Correct distance from human feeder", true);
-//					}
-//					else{
-//						SmartDashboard.putBoolean("Correct distance from human feeder", false);
-//					}
-//					
-//					if(getDistance() < 80 && getDistance() > 70){
-//						SmartDashboard.putBoolean("Correct distance to stacks", true);
-//					}
-//					else{
-//						SmartDashboard.putBoolean("Correct distance to stacks", false);
-//					}
-//					SmartDashboard.putNumber("LIDAR distance Inches", (getDistance() / 2.54));
-//					try {
-//						Thread.sleep(10);
-//					} catch (InterruptedException e) {
-//						e.printStackTrace();
-//					}
-			}
+			update(); 
 		}
 	}
 
