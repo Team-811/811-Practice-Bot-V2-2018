@@ -12,6 +12,7 @@ import com.ctre.phoenix.motion.SetValueMotionProfile;
 import com.ctre.phoenix.motion.TrajectoryPoint;
 import com.ctre.phoenix.motion.TrajectoryPoint.TrajectoryDuration;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
@@ -155,8 +156,8 @@ public void generateTrajectory() {
 		rightMotor.clearMotionProfileTrajectories();
 
 		/* set the base trajectory period to zero, use the individual trajectory period below */
-		leftMotor.configMotionProfileTrajectoryPeriod(Constants.kBaseTrajPeriodMs, Constants.kTimeoutMs);
-		rightMotor.configMotionProfileTrajectoryPeriod(Constants.kBaseTrajPeriodMs, Constants.kTimeoutMs);
+		leftMotor.configMotionProfileTrajectoryPeriod(0, timeoutsMs);
+		rightMotor.configMotionProfileTrajectoryPeriod(0, timeoutsMs);
 		
 		/* This is fast since it's just into our TOP buffer */
 		for (int i = 0; i < totalCnt; ++i) {
@@ -195,6 +196,7 @@ public void generateTrajectory() {
 			rightMotor.pushMotionProfileTrajectory(rightPoint);
 		
 		}
+	}
 		
 	
 	public void configureFollower() {
@@ -215,7 +217,17 @@ public void generateTrajectory() {
 		leftMotor.config_kI(0, 0.0, timeoutsMs);
 		leftMotor.config_kD(0, 20.0, timeoutsMs);
 		
+		//TODO
+		rightMotor.config_kF(0, 0.076, timeoutsMs);
+		rightMotor.config_kP(0, 2.000, timeoutsMs);
+		rightMotor.config_kI(0, 0.0, timeoutsMs);
+		rightMotor.config_kD(0, 20.0, timeoutsMs);
+		
 		leftMotor.configMotionProfileTrajectoryPeriod(10, 0); //Our profile uses 10 ms timing
+		rightMotor.configMotionProfileTrajectoryPeriod(10, 0); //Our profile uses 10 ms timing
+		
+		leftMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, timeoutsMs);
+		rightMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, timeoutsMs);
 		
 	}
 
@@ -270,7 +282,7 @@ public void generateTrajectory() {
 						 * MP is being sent to CAN bus, wait a small amount of time
 						 */
 						state = 1;
-						loopTimeout = kNumLoopsTimeout;
+						loopTimeout = timeoutsMs;
 					}
 					break;
 				case 1: /*
@@ -278,12 +290,12 @@ public void generateTrajectory() {
 						 * points
 						 */
 					/* do we have a minimum numberof points in Talon */
-					if (status.btmBufferCnt > kMinPointsInTalon) {
+					if (status.btmBufferCnt > minBufferPoints) {
 						/* start (once) the motion profile */
 						setValue = SetValueMotionProfile.Enable;
 						/* MP will start once the control frame gets scheduled */
 						state = 2;
-						loopTimeout = kNumLoopsTimeout;
+						loopTimeout = timeoutsMs;
  					}
 					break;
 				case 2: /* check the status of the MP */
@@ -293,7 +305,7 @@ public void generateTrajectory() {
 					 * the middle of an MP and react to it.
 					 */
 					if (status.isUnderrun == false) {
-						loopTimeout = kNumLoopsTimeout;
+						loopTimeout = timeoutsMs;
 					}
 					/*
 					 * If we are executing an MP and the MP finished, start loading
@@ -308,21 +320,24 @@ public void generateTrajectory() {
 						setValue = SetValueMotionProfile.Hold;
 						state = 0;
 						loopTimeout = -1;
-						}
+						
 					}
 					break;
 			}
+		}
 
 			/* Get the motion profile status every loop */
 			leftMotor.getMotionProfileStatus(status);
 			rightMotor.getMotionProfileStatus(status);
+			
+			leftMotor.set(ControlMode.MotionProfile, setValue.value);
+			rightMotor.set(ControlMode.MotionProfile, setValue.value);
+			
 
 		
 	}	
 		
-	public SetValueMotionProfile getOutput() {
-		return setValue;
-	}
+	
 		
 	private double convertToRotations(double length) {
 		double rotations = length / (wheel_diameter * Math.PI);
