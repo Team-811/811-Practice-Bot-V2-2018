@@ -212,13 +212,13 @@ public void generateTrajectory() {
 		
 		
 		//TODO
-		leftMotor.config_kF(0,(absolute_max_velocity / (20 * Math.PI)) * encoder_rotation  , timeoutsMs);
+		leftMotor.config_kF(0,((convertToRotations(absolute_max_velocity) / 10) * encoder_rotation)  , timeoutsMs);
 		leftMotor.config_kP(0, kP, timeoutsMs);
 		leftMotor.config_kI(0, 0, timeoutsMs);
 		leftMotor.config_kD(0, kD, timeoutsMs);
 		
 		//TODO
-		rightMotor.config_kF(0, (absolute_max_velocity / (20 * Math.PI)) * encoder_rotation, timeoutsMs);
+		rightMotor.config_kF(0, ((convertToRotations(absolute_max_velocity) / 10) * encoder_rotation)  , timeoutsMs);
 		rightMotor.config_kP(0, kP, timeoutsMs);
 		rightMotor.config_kI(0, 0.0, timeoutsMs);
 		rightMotor.config_kD(0, kD, timeoutsMs);
