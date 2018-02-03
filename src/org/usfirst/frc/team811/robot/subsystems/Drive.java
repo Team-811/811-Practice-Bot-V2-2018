@@ -59,8 +59,8 @@ public class Drive extends Subsystem implements Config {
     double max_jerk = 60.0;
     double wheel_diameter = 0.219;
     double wheel_base_distance = 0.3683;
-    int encoder_rotation = 1024;
-    double kI = 0.0;
+    int encoder_rotation = 1000;
+    double kD = 0.0;
     double kP = 1.0;
     double acceleration_gain = 0.3;
     //TODO
@@ -89,7 +89,7 @@ public class Drive extends Subsystem implements Config {
     		moveVal = -joy1.getRawAxis(FORWARD_DRIVE_AXIS);
     	}
     	
-    		turnVal = -joy1.getRawAxis(TURN_DRIVE_AXIS);
+    		turnVal = joy1.getRawAxis(TURN_DRIVE_AXIS);
     	
     	
     	driveTrain.arcadeDrive(-1 * moveVal * SPEED_SCALE, turnVal * SPEED_SCALE);
@@ -111,12 +111,12 @@ public void generateTrajectory() {
 		Waypoint[] points = new Waypoint[] {
 				new Waypoint(0, 0, 0), 
 																						
-				new Waypoint(3, -1, Pathfinder.d2r(-45)), // Waypoint @ x=-2, y=-2, exit angle=0 radians
+				new Waypoint(2, 0, 0), // Waypoint @ x=-2, y=-2, exit angle=0 radians
 				//new Waypoint(6, 0, 0),
 				//new Waypoint(2,-2,Pathfinder.d2r(-90))
 		};
 
-		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05, max_velocity, max_acceleration, max_jerk);
+		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.1, max_velocity, max_acceleration, max_jerk);
 		trajectory = Pathfinder.generate(points, config);
 		TankModifier modifier = new TankModifier(trajectory).modify(wheel_base_distance);
 		leftTrajectory = modifier.getLeftTrajectory();
@@ -212,16 +212,16 @@ public void generateTrajectory() {
 		
 		
 		//TODO
-		leftMotor.config_kF(0, 0.076, timeoutsMs);
-		leftMotor.config_kP(0, 2.000, timeoutsMs);
-		leftMotor.config_kI(0, 0.0, timeoutsMs);
-		leftMotor.config_kD(0, 20.0, timeoutsMs);
+		leftMotor.config_kF(0,(absolute_max_velocity / (20 * Math.PI)) * encoder_rotation  , timeoutsMs);
+		leftMotor.config_kP(0, kP, timeoutsMs);
+		leftMotor.config_kI(0, 0, timeoutsMs);
+		leftMotor.config_kD(0, kD, timeoutsMs);
 		
 		//TODO
-		rightMotor.config_kF(0, 0.076, timeoutsMs);
-		rightMotor.config_kP(0, 2.000, timeoutsMs);
+		rightMotor.config_kF(0, (absolute_max_velocity / (20 * Math.PI)) * encoder_rotation, timeoutsMs);
+		rightMotor.config_kP(0, kP, timeoutsMs);
 		rightMotor.config_kI(0, 0.0, timeoutsMs);
-		rightMotor.config_kD(0, 20.0, timeoutsMs);
+		rightMotor.config_kD(0, kD, timeoutsMs);
 		
 		leftMotor.configMotionProfileTrajectoryPeriod(10, 0); //Our profile uses 10 ms timing
 		rightMotor.configMotionProfileTrajectoryPeriod(10, 0); //Our profile uses 10 ms timing
@@ -336,6 +336,12 @@ public void generateTrajectory() {
 
 		
 	}	
+	
+	
+	public void reset() {
+		leftMotor.set(ControlMode.PercentOutput, 0);
+		leftMotor.set(ControlMode.PercentOutput, 0);
+	}
 		
 	
 		

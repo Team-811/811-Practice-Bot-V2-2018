@@ -43,13 +43,13 @@ public class RobotMap implements Config
 
             	
         driveLeft = new WPI_TalonSRX(DRIVE_LEFT_PORT); 
-        driveLeft.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, 10);
-        driveLeft.setSensorPhase(true); /* keep sensor and motor in phase */
+        driveLeft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
+        driveLeft.setSensorPhase(false); /* keep sensor and motor in phase */
         driveLeft.configNeutralDeadband(0.01, 0);
         
         
-        driveRight = new WPI_TalonSRX(DRIVE_RIGHT_PORT);    
-        driveRight.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+        driveRight = new WPI_TalonSRX(DRIVE_RIGHT_PORT);     
+        driveRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
         driveRight.setSensorPhase(true); /* keep sensor and motor in phase */
         driveRight.configNeutralDeadband(0.01, 0);
         

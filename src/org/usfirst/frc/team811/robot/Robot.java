@@ -29,8 +29,8 @@ import org.usfirst.frc.team811.robot.subsystems.*;
 public class Robot extends IterativeRobot 
 {
 	public static Drive drive;
-	//public static Ultrasonic ultra;
-	
+
+	public static Lidar lidar;
 	
 	public static OI oi;
 	public static RobotMap robotMap;
@@ -49,18 +49,14 @@ public class Robot extends IterativeRobot
 		robotMap.init();
 
 		drive = new Drive();
-
-
+		
+		lidar = new Lidar();
+		
 		oi = new OI();
-		// System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		
 		drive.generateTrajectory();
-		
-		
-		//ultra.setAutomaticMode(true);
-		
-		
-		
-		
+		// System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+				
 	}
 
 	public void disabledPeriodic() 
@@ -72,7 +68,7 @@ public class Robot extends IterativeRobot
 	{
 		// schedule the autonomous command (example)
 		System.out.println("humor me");
-		autonomousCommand = new auto_follow_trajectory();
+		autonomousCommand = new follow_trajectory();
 		autonomousCommand.start();
 		
 	}
@@ -95,8 +91,6 @@ public class Robot extends IterativeRobot
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
 		
-		RobotMap.driveEncoderLeft.reset();
-    	RobotMap.driveEncoderRight.reset();
     	RobotMap.ahrs.zeroYaw();
 		
 		
@@ -121,14 +115,15 @@ public class Robot extends IterativeRobot
 		SmartDashboard.putNumber("gyro value", RobotMap.ahrs.getAngle());	
 		SmartDashboard.putString("yaw axis", RobotMap.ahrs.getBoardYawAxis().board_axis.toString());
 		SmartDashboard.putNumber("drive encoder left",
-				RobotMap.driveEncoderLeft.getRaw());
+				RobotMap.driveLeft.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("drive encoder right",
-				RobotMap.driveEncoderRight.getRaw());
-		SmartDashboard.putNumber("speed", RobotMap.driveEncoderLeft.getRate());
-		SmartDashboard.putNumber("ultrasthingggy raw", 
-				RobotMap.ultra.getValue()); //in millimeters for 2^OverSampleBits millimeter
-		SmartDashboard.putNumber("ultrasthingggy avg", 
-				RobotMap.ultra.getAverageValue()); //16 times the raw, 16 millimeter ticks 
+				RobotMap.driveRight.getSelectedSensorPosition(0));
+//		SmartDashboard.putNumber("ultrasthingggy raw", 
+//				RobotMap.ultra.getValue()); //in millimeters for 2^OverSampleBits millimeter
+//		SmartDashboard.putNumber("ultrasthingggy avg", 
+//				RobotMap.ultra.getAverageValue()); //16 times the raw, 16 millimeter ticks 
+		
+		SmartDashboard.putNumber("Lidar", Robot.lidar.getDistance());
 	
 	}
 

@@ -7,8 +7,8 @@ public interface Config {
 	
 	//ports
 	
-	int DRIVE_RIGHT_PORT = 3;	
-	int DRIVE_LEFT_PORT = 1;	
+	int DRIVE_RIGHT_PORT = 14;	
+	int DRIVE_LEFT_PORT = 13;	
 	
 	
 	int ULTRA_PORT = 0; //TODO
