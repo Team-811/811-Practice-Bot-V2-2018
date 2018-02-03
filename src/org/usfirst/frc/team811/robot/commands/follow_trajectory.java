@@ -19,12 +19,19 @@ public class follow_trajectory extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	Robot.drive.configureFollower();
+    	RobotMap.driveLeft.setSelectedSensorPosition(0, 0, 1);
+    	RobotMap.driveRight.setSelectedSensorPosition(0, 0, 1);
+    	RobotMap.ahrs.reset();
     	
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	//long startTime=System.currentTimeMillis(); //Starts timer
+    	//long elapsedTime=System.currentTimeMillis - startTime; //Gets timer
+    	//if (elapsedTime==1){ //if the timer is equal to 1 milisecond
     	Robot.drive.followTrajectory();
+    	//}
     }
 
     // Make this return true when this Command no longer needs to run execute()

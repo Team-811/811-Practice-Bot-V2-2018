@@ -124,9 +124,9 @@ public class Drive extends Subsystem implements Config {
 	}
 	public void configureFollower() {
 		
-		driveLeft.setSelectedSensorPosition(0, 0, 1);
-		driveRight.setSelectedSensorPosition(0, 0, 1);
-		ahrs.reset();
+		//driveLeft.setSelectedSensorPosition(0, 0, 1);
+	//	driveRight.setSelectedSensorPosition(0, 0, 1);
+	//	ahrs.reset();
 		
 		leftFollower.configureEncoder(driveLeft.getSelectedSensorPosition(0) , encoder_rotation, wheel_diameter);
 		rightFollower.configureEncoder(driveRight.getSelectedSensorPosition(0), encoder_rotation, wheel_diameter);
