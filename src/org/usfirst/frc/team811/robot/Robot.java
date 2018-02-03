@@ -51,6 +51,7 @@ public class Robot extends IterativeRobot
 		drive = new Drive();
 		
 		lidar = new Lidar();
+		//lidar.start();
 		
 		oi = new OI();
 		
