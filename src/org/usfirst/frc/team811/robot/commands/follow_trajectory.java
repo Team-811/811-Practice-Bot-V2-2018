@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class auto_follow_trajectory extends Command {
+public class follow_trajectory extends Command {
 
-    public auto_follow_trajectory() {
+    public follow_trajectory() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.drive);
@@ -18,10 +18,8 @@ public class auto_follow_trajectory extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	RobotMap.driveEncoderLeft.reset();
-    	RobotMap.driveEncoderRight.reset();
-    	RobotMap.ahrs.zeroYaw();
     	Robot.drive.configureFollower();
+    	Robot.drive.startFilling();
     	
     }
 
@@ -32,6 +30,7 @@ public class auto_follow_trajectory extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+    	Robot.drive.reset();
         return false;
     }
 
