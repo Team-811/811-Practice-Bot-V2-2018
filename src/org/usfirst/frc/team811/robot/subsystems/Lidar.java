@@ -26,7 +26,7 @@ public class Lidar extends Subsystem{
 	//private byte[] distance = new byte[2];
 		
 	public Lidar() {
-		i2c = new I2C(Port.kOnboard, LIDAR_ADDR);
+		i2c = new I2C(Port.kMXP, LIDAR_ADDR);
 		//task = new LIDARUpdater();
 		updateTimer = new java.util.Timer();
 		//readData = new byte[1];
@@ -88,10 +88,7 @@ public class Lidar extends Subsystem{
 //			
 //			Timer.delay(0.01); // Delay to prevent over polling
 			
-		
-		
-		
-		
+
 //		//i2c.write(LIDAR_CONFIG_REGISTER, 0x04);
 //		i2c.writeBulk(distance, 0x04);
 //		Timer.delay(0.04);
@@ -131,8 +128,11 @@ public class Lidar extends Subsystem{
 	}
 	
 	public static void scanForDevice() {
+		System.out.println("Start i2c device scan.");
 		for (int address=1; address <= 126; address++) {
 			I2C i2c = new I2C(Port.kOnboard, address);
+			System.out.print("scanning address ");
+			System.out.println(address);
 			boolean aborted = i2c.addressOnly();
 			if (!aborted){
 				System.out.print("Address found at ");

@@ -24,11 +24,7 @@ public class RobotMap implements Config
 	
     public static WPI_TalonSRX driveLeft;
 	public static WPI_TalonSRX driveRight;
-    public static Encoder driveEncoderLeft;
-    public static Encoder driveEncoderRight;
     public static DifferentialDrive driveTrain;
-    public static AnalogGyro driveGyro;
-    public static PIDController pid;
     public static AHRS ahrs;
     public static PIDController turnController;
     public static AnalogInput ultra;
@@ -43,14 +39,14 @@ public class RobotMap implements Config
 
             	
         driveLeft = new WPI_TalonSRX(DRIVE_LEFT_PORT); 
-        driveLeft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
-        driveLeft.setSensorPhase(false); /* keep sensor and motor in phase */
+        driveLeft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 1);
+        driveLeft.setSensorPhase(true); /* keep sensor and motor in phase */
         driveLeft.configNeutralDeadband(0.01, 0);
         
         
         driveRight = new WPI_TalonSRX(DRIVE_RIGHT_PORT);     
-        driveRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
-        driveRight.setSensorPhase(true); /* keep sensor and motor in phase */
+        driveRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 1);
+        driveRight.setSensorPhase(false); /* 1keep sensor and motor in phase */
         driveRight.configNeutralDeadband(0.01, 0);
         
         

@@ -19,7 +19,6 @@ public class follow_trajectory extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	Robot.drive.configureFollower();
-    	Robot.drive.startFilling();
     	
     }
 
@@ -30,7 +29,7 @@ public class follow_trajectory extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	Robot.drive.reset();
+    	//Robot.drive.reset();
         return false;
     }
 

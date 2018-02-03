@@ -3,6 +3,8 @@ package org.usfirst.frc.team811.robot;
 import java.io.IOException;
 
 import org.usfirst.frc.team811.robot.subsystems.*;
+import org.usfirst.frc.team811.robot.subsystems.GeneratedMotionProfiles.OldDrive;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Ultrasonic;
@@ -85,6 +87,11 @@ public class Robot extends IterativeRobot
 
 	public void teleopInit() 
 	{
+		System.out.println("Teleop init called.");
+		
+		RobotMap.driveLeft.setSelectedSensorPosition(0, 0, 5);
+		RobotMap.driveRight.setSelectedSensorPosition(0, 0, 5);
+
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
@@ -93,8 +100,6 @@ public class Robot extends IterativeRobot
 			autonomousCommand.cancel();
 		
     	RobotMap.ahrs.zeroYaw();
-		
-		
 	}
 	/**
 	 * This function is called when the disabled button is hit. You can use it
@@ -105,13 +110,20 @@ public class Robot extends IterativeRobot
 
 	}
 
+	
+	private boolean i2cScanDone = false;
 	/**
 	 * This function is called periodically during operator control
 	 */
 	public void teleopPeriodic()
 	{
-		Scheduler.getInstance().run();
+		if (!i2cScanDone) {
+			i2cScanDone = true;
+			Lidar.scanForDevice();
+		}
 
+		Scheduler.getInstance().run();
+		
 		SmartDashboard.putNumber("gyro value yaw", RobotMap.ahrs.getYaw());	
 		SmartDashboard.putNumber("gyro value", RobotMap.ahrs.getAngle());	
 		SmartDashboard.putString("yaw axis", RobotMap.ahrs.getBoardYawAxis().board_axis.toString());
